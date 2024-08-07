@@ -1,7 +1,5 @@
 # Image Metadata Extractor CLI
 
-[![Build and Release](https://github.com/Avaray/metadata-extractor-cli/actions/workflows/build-and-release.yml/badge.svg?event=workflow_run)](https://github.com/Avaray/metadata-extractor-cli/actions/workflows/build-and-release.yml)
-
 A command-line interface (CLI) application that extracts metadata from image files. This tool is designed for developers who need to quickly access metadata from images in various formats.
 
 ## Features
