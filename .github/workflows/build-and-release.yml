@@ -27,11 +27,11 @@ jobs:
       - name: Install dependencies
         run: dotnet add package MetadataExtractor --version 2.8.1
 
-      - name: Restore dependencies
-        run: dotnet restore
+      # - name: Restore dependencies
+      #   run: dotnet restore
 
       - name: Build
-        run: dotnet publish -c Release -r linux-x64 --self-contained false -o ./publish
+        run: dotnet build --runtime linux-x64
 
       # - name: Make publish script executable # I'm not sure if this is necessary.
       #   run: chmod +x publish.sh
