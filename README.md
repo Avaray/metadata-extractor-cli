@@ -8,7 +8,7 @@ A command-line interface (CLI) application that extracts metadata from image fil
 - Outputs the extracted metadata to console as JSON or saves it to a JSON file.
 - Supports [various image formats](https://github.com/drewnoakes/metadata-extractor-dotnet?tab=readme-ov-file#features).
 
-## Technologies and Packages Used
+## Technologies and Libraries Used
 
 - **Programming Language**: [C#](https://dotnet.microsoft.com/en-us/languages/csharp)
 - **Framework**: [.NET 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
