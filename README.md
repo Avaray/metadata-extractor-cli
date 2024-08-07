@@ -5,7 +5,7 @@ A command-line interface (CLI) application that extracts metadata from image fil
 ## Features
 
 - Extracts metadata from single image or all images in a specified directory.
-- Outputs the extracted metadata the console or to a JSON file.
+- Outputs the extracted metadata to console as JSON or saves it to a JSON file.
 - Supports [various image formats](https://github.com/drewnoakes/metadata-extractor-dotnet?tab=readme-ov-file#features).
 
 ## Technologies and Packages Used
