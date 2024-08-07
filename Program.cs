@@ -23,9 +23,9 @@ class Program
 
     static async Task Main(string[] args)
     {
-        if (args.Length == 0)
+        if (args.Length == 0 || args.Contains("-h") || args.Contains("--help"))
         {
-            Console.WriteLine("Usage: MetadataExtractorCLI <file-path> [-d <directory-path>] [-o <output-file>]");
+            DisplayHelp();
             return;
         }
 
@@ -137,5 +137,22 @@ class Program
             FileName = System.IO.Path.GetFileName(imagePath),
             Tags = metadataTags
         };
+    }
+
+    private static void DisplayHelp()
+    {
+        Console.WriteLine("Usage: extractor <file-path> [-d <directory-path>] [-o <output-file>] [-h|--help]");
+        Console.WriteLine();
+        Console.WriteLine("Options:");
+        Console.WriteLine("  <file-path>           Path to a single image file.");
+        Console.WriteLine("  -d <directory-path>   Path to a directory containing image files.");
+        Console.WriteLine("  -o <output-file>      Path to the output file for saving the extracted metadata.");
+        Console.WriteLine("  -h, --help            Display help information.");
+        Console.WriteLine();
+        Console.WriteLine("Examples:");
+        Console.WriteLine("  extractor image.jpg");
+        Console.WriteLine("  extractor -d images_directory");
+        Console.WriteLine("  extractor image.jpg -o output.json");
+        Console.WriteLine("  extractor -d images_directory -o output.json");
     }
 }
