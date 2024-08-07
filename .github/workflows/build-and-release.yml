@@ -1,11 +1,11 @@
 name: Build and Release
 
 on:
+  workflow_dispatch:
   push:
     paths:
       - '**.csproj'
       - 'Program.cs'
-  workflow_dispatch:
 
 jobs:
   build:
@@ -26,6 +26,9 @@ jobs:
 
       - name: Restore dependencies
         run: dotnet restore
+
+      - name: Make publish script executable
+        run: chmod +x publish.sh
 
       - name: Build and Publish
         run: bash publish.sh # I wonder if this will work.
