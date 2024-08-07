@@ -24,11 +24,17 @@ jobs:
         with:
           dotnet-version: '8.0.204' # 8.0.0 might be enough. I just set it to the bersion I used.
 
+      - name: Install dependencies
+        run: dotnet add package MetadataExtractor --version 2.8.1
+
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Make publish script executable # I'm not sure if this is necessary.
-        run: chmod +x publish.sh
+      # - name: Make publish script executable # I'm not sure if this is necessary.
+      #   run: chmod +x publish.sh
+
+      # - name: Build and Publish
+      #   run: bash publish.sh
 
       - name: Build and Publish
         run: bash publish.sh
