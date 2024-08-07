@@ -1,11 +1,11 @@
 name: Build and Release
 
 on:
-  workflow_dispatch:
   push:
     paths:
       - '**.csproj'
       - 'Program.cs'
+  workflow_dispatch:
 
 jobs:
   build:
