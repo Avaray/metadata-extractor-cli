@@ -30,8 +30,8 @@ jobs:
       # - name: Restore dependencies
       #   run: dotnet restore
 
-      - name: Build
-        run: dotnet build --runtime linux-x64
+      # - name: Build
+      #   run: dotnet build --runtime linux-x64
 
       # - name: Make publish script executable # I'm not sure if this is necessary.
       #   run: chmod +x publish.sh
