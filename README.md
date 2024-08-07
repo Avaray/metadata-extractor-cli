@@ -43,6 +43,12 @@ extractor <file-path>
 extractor -d <directory-path>
 ```
 
+<!-- - **Recursive Directory**: Extract metadata from all images in a specified directory and its subdirectories.
+
+```
+extractor -r <directory-path>
+``` -->
+
 - **Output to File**: Save the extracted metadata to a JSON file.
 
 ```
