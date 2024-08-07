@@ -37,7 +37,7 @@ extractor -h
 extractor <file-path>
 ```
 
-- **Directory**: Extract metadata from all images in a specified directory.
+- **Directory**: Extract metadata from all images in a specified directory (not recursive).
 
 ```
 extractor -d <directory-path>
