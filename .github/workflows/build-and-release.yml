@@ -27,8 +27,8 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Make publish script executable
+      - name: Make publish script executable # I'm not sure if this is necessary.
         run: chmod +x publish.sh
 
       - name: Build and Publish
-        run: bash publish.sh # I wonder if this will work.
+        run: bash publish.sh
