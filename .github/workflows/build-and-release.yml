@@ -30,8 +30,8 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore
 
-      - name: Build for specific platform
-        run: dotnet build --runtime win-x64 # Specify your desired runtime
+      - name: Build
+        run: dotnet publish -c Release -r linux-x64 --self-contained false -o ./publish
 
       # - name: Make publish script executable # I'm not sure if this is necessary.
       #   run: chmod +x publish.sh
@@ -39,5 +39,3 @@ jobs:
       # - name: Build and Publish
       #   run: bash publish.sh
 
-      - name: Build and Publish
-        run: bash publish.sh
