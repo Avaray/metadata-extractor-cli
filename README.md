@@ -25,7 +25,7 @@ A command-line interface (CLI) application that extracts metadata from image fil
 3. Navigate to the directory where you extracted the files.
 4. Run the following command to get list of available commands:
 
-```bash
+```
 extractor -h
 ```
 
@@ -33,19 +33,19 @@ extractor -h
 
 - **Single Image**: Extract metadata from a single image file.
 
-```bash
+```
 extractor <file-path>
 ```
 
 - **Directory**: Extract metadata from all images in a specified directory.
 
-```bash
+```
 extractor -d <directory-path>
 ```
 
 - **Output to File**: Save the extracted metadata to a JSON file.
 
-```bash
+```
 extractor <file-path> -o <output-file>
 ```
 
