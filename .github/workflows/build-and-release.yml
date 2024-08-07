@@ -1,0 +1,31 @@
+name: Build and Release
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - '**.csproj'
+      - 'Program.cs'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        arch: [x64, x86]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.204' # 8.0.0 might be enough. I just set it to the bersion I used.
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build and Publish
+        run: bash publish.sh # I wonder if this will work.
