@@ -30,4 +30,4 @@ jobs:
 
       - name: Show directory tree
         run: |
-          tree -f -I '.git|.github|.vscode|packages|obj|*md|*sh'
+          tree -f
