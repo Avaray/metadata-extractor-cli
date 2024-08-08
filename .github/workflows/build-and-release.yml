@@ -36,13 +36,14 @@ jobs:
           elif [ "${{ matrix.os }}" == "macos-latest" ]; then
             RID="osx-${{ matrix.arch }}"
           fi
+          echo "RID=$RID" >> $GITHUB_ENV
           dotnet publish -c Release -r $RID --self-contained true -p:PublishSingleFile=true
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-${{ matrix.arch }}
-          path: bin/Release/net8.0/publish/** # Here I have problem with correct path
+          path: .bin/Release/net8.0/${{ env.RID }}/publish/** # Here I have problem with correct path
 
       - name: Show project directory tree
         run: |
