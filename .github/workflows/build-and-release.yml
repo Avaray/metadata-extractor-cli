@@ -11,9 +11,13 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
+      # When I finish this Workflow script, I will use the following matrix:
+      # matrix:
+      #   os: [ubuntu-latest, windows-latest, macos-latest]
+      #   arch: [x64, x86]
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        arch: [x64, x86]
+        os: [ubuntu-latest, windows-latest]
+        arch: [x64]
 
     steps:
       - name: Checkout code
@@ -25,18 +29,13 @@ jobs:
           dotnet-version: '8.0.204' # 8.0.0 might be enough. I just set it to the bersion I used.
           cache: true
 
-      - name: Install dependencies
-        run: dotnet add package MetadataExtractor --version 2.8.1
+      # Need to check if I need to install the dependencies or not
+      # - name: Install dependencies
+      #   run: dotnet add package MetadataExtractor --version 2.8.1
 
+      # Do I need to restore the dependencies?
       # - name: Restore dependencies
       #   run: dotnet restore
 
-      # - name: Build
-      #   run: dotnet build --runtime linux-x64
 
-      # - name: Make publish script executable # I'm not sure if this is necessary.
-      #   run: chmod +x publish.sh
-
-      # - name: Build and Publish
-      #   run: bash publish.sh
 
