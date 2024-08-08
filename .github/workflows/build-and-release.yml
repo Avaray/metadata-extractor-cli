@@ -17,9 +17,6 @@ jobs:
         os: [ubuntu-latest, windows-latest] # [ubuntu-latest, windows-latest, macos-latest]
         arch: [x64] # [x64, x86]
 
-    # env:
-    #   CLI_NAME: 'extractor'
-
     steps:
       - uses: actions/checkout@v4
 
@@ -28,19 +25,20 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      # I will use this later
-      # - name: Build
-      #   run: dotnet build --configuration Release
+      - name: Restore dependencies
+        run: dotnet restore
 
-      - name: Publish Single File Executable
-        run: dotnet publish -c Release -r ${{ matrix.os }}-${{ matrix.arch }} --self-contained true -p:PublishSingleFile=true
+      - name: Build the project
+        run: dotnet build --no-restore --configuration Release
 
-      - name: Upload Single File Executable
+      - name: Test the project
+        run: dotnet test --no-build --verbosity normal
+
+      - name: Publish the project
+        run: dotnet publish --configuration Release --output publish
+
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.os }}-${{ matrix.arch }}
-          path: bin/Release/net8.0/${{ matrix.os }}-${{ matrix.arch }}/publish
-
-      # - name: Show project directory tree
-      #   run: |
-      #     tree -f -a -I '.git'
+          name: ${{ matrix.os }}-${{ matrix.arch }}-build
+          path: publish
