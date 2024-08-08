@@ -88,6 +88,8 @@ dotnet build
 
 I created this project because I needed a tool like this. I will use it in my other project where I need to extract metadata from images. Normally I don't code in C# but with help of [Claude](https://claude.ai/) and [Perplexity](https://www.perplexity.ai/) it was pretty easy 👌
 
+Creating a working CLI took me a little over an hour. However, messing around with configuring GitHub Actions for Releases took about 12 hours. But at least I learned something new.
+
 I might add more features in the future. I'm considering adding these features:
 
 - Extract metadata from images in a recursive manner (as default). This feature will break current JSON output format (it's array of objects now).
