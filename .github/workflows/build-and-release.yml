@@ -47,3 +47,7 @@ jobs:
       - name: Show directory tree of workspace
         run: |
           tree -f -a -I '.git' ${{ github.workspace }}
+
+      - name: Show directory tree of /home
+        run: |
+          tree -f -a -I '.git' /home
