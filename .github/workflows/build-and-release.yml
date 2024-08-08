@@ -37,5 +37,31 @@ jobs:
       # - name: Restore dependencies
       #   run: dotnet restore
 
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.os }}-${{ matrix.arch }}
+          path: bin/Release/net8.0/${{ matrix.os == 'windows-latest' && matrix.arch == 'x64' && 'win-x64' || matrix.arch == 'x86' && 'win-x86' || matrix.os == 'ubuntu-latest' && matrix.arch == 'x64' && 'linux-x64' || matrix.arch == 'x86' && 'linux-x86' || matrix.os == 'macos-latest' && matrix.arch == 'x64' && 'osx-x64' || 'osx-x86' }}/publish/**
 
+  release:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Download Artifacts
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{ matrix.os }}-${{ matrix.arch }}
 
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref }}
+          files: |
+            **/*.exe
+            **/*.dll
+            **/*.json
+            **/*.sh
+            **/*.zip
+            **/*.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.DYGNITORZ_SECRET }}
