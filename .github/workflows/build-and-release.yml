@@ -27,6 +27,9 @@ jobs:
       - name: Build
         run: dotnet build --configuration Release
 
+      - name: Build Single File Executable
+        run: dotnet build --configuration Release --runtime linux-x64 /p:PublishSingleFile=true /p:PublishTrimmed=true
+
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -40,7 +43,3 @@ jobs:
       - name: Show directory structure of /home/runner/work/
         run: |
           tree -f -I '.git' /home/runner/work/
-
-      - name: Checking whats inside The Matrix
-        run: |
-          echo "${{ matrix }}"
