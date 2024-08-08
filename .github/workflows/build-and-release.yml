@@ -21,17 +21,13 @@ jobs:
       - name: Set OS Variable
         id: os_variable
         run: |
-          case ${{ matrix.os }} in
-            windows-latest)
-              echo "OS=windows" >> $GITHUB_OUTPUT
-              ;;
-            ubuntu-latest)
-              echo "OS=linux" >> $GITHUB_OUTPUT
-              ;;
-            macos-latest)
-              echo "OS=mac" >> $GITHUB_OUTPUT
-              ;;
-          esac
+          if [ "${{ runner.os }}" == "Windows" ]; then
+            echo "OS=windows" >> $GITHUB_OUTPUT
+          elif [ "${{ runner.os }}" == "Linux" ]; then
+            echo "OS=linux" >> $GITHUB_OUTPUT
+          elif [ "${{ runner.os }}" == "macOS" ]; then
+            echo "OS=mac" >> $GITHUB_OUTPUT
+          fi
 
       - name: Use OS Variable
         run: |
