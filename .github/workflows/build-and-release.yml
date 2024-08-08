@@ -17,9 +17,12 @@ jobs:
         os: [ubuntu-latest, windows-latest] # [ubuntu-latest, windows-latest, macos-latest]
         arch: [x64] # [x64, x86]
 
+    env:
+      BASH_VER: bash -c 'echo bash --version'
+
     steps:
       - name: Run BASH echo command
-        run: bash --version
+        run: bash $BASH_VER
 
       # - name: Setup .NET
       #   uses: actions/setup-dotnet@v4
