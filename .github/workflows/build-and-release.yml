@@ -17,6 +17,8 @@ jobs:
         os: [ubuntu-latest, windows-latest] # [ubuntu-latest, windows-latest, macos-latest]
         arch: [x64] # [x64, x86]
 
+    # env:
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -32,7 +34,7 @@ jobs:
 
       - name: Publish Single File Executable
         run: |
-          if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+          bash if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
             RID="linux-${{ matrix.arch }}"
           elif [ "${{ matrix.os }}" == "windows-latest" ]; then
             RID="win-${{ matrix.arch }}"
@@ -44,7 +46,7 @@ jobs:
 
       - name: Set Executable Path
         run: |
-          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+          bash if [ "${{ matrix.os }}" == "windows-latest" ]; then
             FILE_PATH="bin/Release/net8.0/${{ env.RID }}/publish/extractor.exe"
           else
             FILE_PATH="bin/Release/net8.0/${{ env.RID }}/publish/extractor"
