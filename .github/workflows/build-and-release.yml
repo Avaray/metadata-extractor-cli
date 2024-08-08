@@ -33,31 +33,13 @@ jobs:
       #   run: dotnet build --configuration Release
 
       - name: Publish Single File Executable
-        run: |
-          bash if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
-            RID="linux-${{ matrix.arch }}"
-          elif [ "${{ matrix.os }}" == "windows-latest" ]; then
-            RID="win-${{ matrix.arch }}"
-          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
-            RID="osx-${{ matrix.arch }}"
-          fi
-          echo "RID=$RID" >> $GITHUB_ENV
-          dotnet publish -c Release -r $RID --self-contained true -p:PublishSingleFile=true
-
-      - name: Set Executable Path
-        run: |
-          bash if [ "${{ matrix.os }}" == "windows-latest" ]; then
-            FILE_PATH="bin/Release/net8.0/${{ env.RID }}/publish/extractor.exe"
-          else
-            FILE_PATH="bin/Release/net8.0/${{ env.RID }}/publish/extractor"
-          fi
-          echo "FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
+        run: dotnet publish -c Release -r ${{ matrix.os }}-${{ matrix.arch }} --self-contained true -p:PublishSingleFile=true
 
       - name: Upload Single File Executable
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-${{ matrix.arch }}
-          path: ${{ env.FILE_PATH }}
+          path: bin/Release/net8.0/${{ matrix.os }}-${{ matrix.arch }}/publish
 
       - name: Show project directory tree
         run: |
