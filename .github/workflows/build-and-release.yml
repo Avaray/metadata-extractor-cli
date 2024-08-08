@@ -43,7 +43,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-${{ matrix.arch }}
-          path: .bin/Release/net8.0/${{ env.RID }}/publish/** # Here I have problem with correct path
+          path: bin/Release/net8.0/${{ env.RID }}/publish/** # Here I have problem with correct path
 
       - name: Show project directory tree
         run: |
