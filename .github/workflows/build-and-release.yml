@@ -43,3 +43,7 @@ jobs:
       - name: Show directory tree
         run: |
           tree -f -a -I '.git'
+
+      - name: Show directory tree of workspace
+        run: |
+          tree -f -a -I '.git' ${{ github.workspace }}
