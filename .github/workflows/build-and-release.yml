@@ -18,13 +18,24 @@ jobs:
         arch: [x64] # [x64, x86]
 
     env:
-      BASH_VER: bash -c 'echo bash --version'
+      CLI_NAME: 'extractor'
 
     steps:
       - uses: actions/checkout@v4
 
-      - name: Run BASH echo command
-        run: ${{ env.BASH_VER }}
+      - name: Set OS-specific environment variable
+        run: |
+          if [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+            echo "OS_ENV=linux" >> $GITHUB_OUTPUT
+          elif [ "${{ matrix.os }}" == "windows-latest" ]; then
+            echo "OS_ENV=windows" >> $GITHUB_OUTPUT  
+          elif [ "${{ matrix.os }}" == "macos-latest" ]; then
+            echo "OS_ENV=macos" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Print OS-specific environment variable
+        run: |
+          echo "$OS_ENV"
 
       # - name: Setup .NET
       #   uses: actions/setup-dotnet@v4
