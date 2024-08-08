@@ -11,22 +11,13 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
-      # When I finish this Workflow script, I will use the following matrix:
-      # matrix:
-      #   os: [ubuntu-latest, windows-latest, macos-latest]
-      #   arch: [x64, x86]
       matrix:
-        os: [ubuntu-latest]
-        arch: [x64]
+        os: [ubuntu-latest] # [ubuntu-latest, windows-latest, macos-latest]
+        arch: [x64] # [x64, x86]
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Create Artifact
-        run: |
-          mkdir -p my-artifact
-          echo "This is a sample artifact" > my-artifact/example.txt
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -35,7 +26,6 @@ jobs:
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
-        if: ${{ success() }}
         with:
           name: ${{ matrix.os }}-${{ matrix.arch }}
           path: bin/Release/net8.0/publish/** # Here I have problem with correct path
