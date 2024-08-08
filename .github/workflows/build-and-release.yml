@@ -28,9 +28,9 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Show directory tree before upload artifacts
+      - name: Show project's directory tree before upload artifacts
         run: |
-          tree -f -a
+          tree -f -a -I '.git'
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
@@ -41,4 +41,4 @@ jobs:
 
       - name: Show directory tree after upload artifacts
         run: |
-          tree -f -a
+          tree -f -a -I '.git'
