@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Run BASH echo command
-        run: bash $BASH_VER
+        run: bash -c 'echo $BASH_VER'
 
       # - name: Setup .NET
       #   uses: actions/setup-dotnet@v4
