@@ -19,7 +19,7 @@ jobs:
 
     steps:
       - name: Run BASH echo command
-        run: echo "Hello, World!"
+        run: bash --version
 
       # - name: Setup .NET
       #   uses: actions/setup-dotnet@v4
