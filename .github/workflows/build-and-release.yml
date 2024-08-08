@@ -14,7 +14,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest] # [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest] # [ubuntu-latest, windows-latest, macos-latest]
         arch: [x64] # [x64, x86]
 
     steps:
@@ -24,50 +24,3 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.x'
-
-      - name: Restore dependencies
-        run: dotnet restore
-
-      - name: Build the project
-        run: dotnet build --no-restore --configuration Release
-
-      - name: Test the project
-        run: dotnet test --no-build --verbosity normal
-
-      - name: Publish the project
-        run: dotnet publish --configuration Release --output publish
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.os }}-${{ matrix.arch }}-build
-          path: publish
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Download Artifacts
-        uses: actions/download-artifact@v3
-
-      - name: Tag the repository
-        id: tag
-        run: |
-          TAG=v$(date +'%Y%m%d%H%M%S')  # Generate a tag based on the current date and time
-          git tag -a $TAG -m "Release version $TAG"
-          git push origin $TAG
-
-      - name: Create Release
-        uses: softprops/action-gh-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          files: |
-            ./ubuntu-latest-x64-build/publish.zip
-            ./windows-latest-x64-build/publish.zip
-          tag_name: $TAG # Use the tag created in the previous step
-          draft: false
-          prerelease: false
