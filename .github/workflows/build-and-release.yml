@@ -26,7 +26,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.204' # 8.0.0 might be enough. I just set it to the version I used.
+          dotnet-version: '8.0.x'
 
       - name: Show directory tree
         run: |
