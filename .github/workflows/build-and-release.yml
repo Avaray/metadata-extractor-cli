@@ -17,30 +17,44 @@ jobs:
         os: [ubuntu-latest, windows-latest] # [ubuntu-latest, windows-latest, macos-latest]
         arch: [x64] # [x64, x86]
 
-    # env:
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Set OS Variable
+        id: os_variable
+        run: |
+          case ${{ matrix.os }} in
+            windows-latest)
+              echo "OS=windows" >> $GITHUB_OUTPUT
+              ;;
+            ubuntu-latest)
+              echo "OS=linux" >> $GITHUB_OUTPUT
+              ;;
+            macos-latest)
+              echo "OS=mac" >> $GITHUB_OUTPUT
+              ;;
+          esac
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '8.0.x'
+      - name: Use OS Variable
+        run: |
+          echo "The current OS is: ${{ steps.os_variable.outputs.OS }}"
+
+      # - name: Setup .NET
+      #   uses: actions/setup-dotnet@v4
+      #   with:
+      #     dotnet-version: '8.0.x'
 
       # I will use this later
       # - name: Build
       #   run: dotnet build --configuration Release
 
-      - name: Publish Single File Executable
-        run: dotnet publish -c Release -r ${{ matrix.os }}-${{ matrix.arch }} --self-contained true -p:PublishSingleFile=true
+      # - name: Publish Single File Executable
+      #   run: dotnet publish -c Release -r ${{ matrix.os }}-${{ matrix.arch }} --self-contained true -p:PublishSingleFile=true
 
-      - name: Upload Single File Executable
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.os }}-${{ matrix.arch }}
-          path: bin/Release/net8.0/${{ matrix.os }}-${{ matrix.arch }}/publish
+      # - name: Upload Single File Executable
+      #   uses: actions/upload-artifact@v4
+      #   with:
+      #     name: ${{ matrix.os }}-${{ matrix.arch }}
+      #     path: bin/Release/net8.0/${{ matrix.os }}-${{ matrix.arch }}/publish
 
-      - name: Show project directory tree
-        run: |
-          tree -f -a -I '.git'
+      # - name: Show project directory tree
+      #   run: |
+      #     tree -f -a -I '.git'
