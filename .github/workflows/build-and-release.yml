@@ -68,6 +68,6 @@ jobs:
           files: |
             ./ubuntu-latest-x64-build/publish.zip
             ./windows-latest-x64-build/publish.zip
-          tag_name: ${{ steps.tag.outputs.tag }} # Use the tag created in the previous step
+          tag_name: $TAG # Use the tag created in the previous step
           draft: false
           prerelease: false
