@@ -28,16 +28,12 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Show project's directory tree before upload artifacts
-        run: |
-          tree -f -a -I '.git'
-
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         if: ${{ success() }}
         with:
           name: ${{ matrix.os }}-${{ matrix.arch }}
-          path: bin/Release/net8.0/publish/**
+          path: bin/Release/net8.0/publish/** # Here I have problem with correct path
 
       - name: Show directory tree after upload artifacts
         run: |
