@@ -23,6 +23,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Create Artifact
+        run: |
+          mkdir -p my-artifact
+          echo "This is a sample artifact" > my-artifact/example.txt
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
@@ -35,6 +40,6 @@ jobs:
           name: ${{ matrix.os }}-${{ matrix.arch }}
           path: bin/Release/net8.0/publish/** # Here I have problem with correct path
 
-      - name: Show directory tree after upload artifacts
+      - name: Show directory tree
         run: |
           tree -f -a -I '.git'
