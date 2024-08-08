@@ -27,7 +27,7 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: '8.0.204' # 8.0.0 might be enough. I just set it to the bersion I used.
-          cache: true
+          # cache: true
 
       # Need to check if I need to install the dependencies or not
       # - name: Install dependencies
