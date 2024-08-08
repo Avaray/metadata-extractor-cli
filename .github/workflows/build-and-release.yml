@@ -6,13 +6,15 @@ on:
     paths:
       - '**.csproj'
       - 'Program.cs'
+      - 'packages.lock.json'
+      - 'icon.ico'
 
 jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest] # [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest] # [ubuntu-latest, windows-latest, macos-latest]
         arch: [x64] # [x64, x86]
 
     steps:
@@ -24,8 +26,9 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Build
-        run: dotnet build --configuration Release
+      # I will use this later
+      # - name: Build
+      #   run: dotnet build --configuration Release
 
       - name: Publish Single File Executable
         run: |
@@ -39,16 +42,21 @@ jobs:
           echo "RID=$RID" >> $GITHUB_ENV
           dotnet publish -c Release -r $RID --self-contained true -p:PublishSingleFile=true
 
-      - name: Upload Artifacts
+      - name: Set Executable Path
+        run: |
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            FILE_PATH="bin/Release/net8.0/${{ env.RID }}/publish/extractor.exe"
+          else
+            FILE_PATH="bin/Release/net8.0/${{ env.RID }}/publish/extractor"
+          fi
+          echo "FILE_PATH=$FILE_PATH" >> $GITHUB_ENV
+
+      - name: Upload Single File Executable
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-${{ matrix.arch }}
-          path: bin/Release/net8.0/${{ env.RID }}/publish/** # Here I have problem with correct path
+          path: ${{ env.FILE_PATH }}
 
       - name: Show project directory tree
         run: |
           tree -f -a -I '.git'
-
-      - name: Show directory structure of /home/runner/work/
-        run: |
-          tree -f -I '.git' /home/runner/work/
