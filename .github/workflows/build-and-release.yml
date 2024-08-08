@@ -40,14 +40,10 @@ jobs:
           name: ${{ matrix.os }}-${{ matrix.arch }}
           path: bin/Release/net8.0/publish/** # Here I have problem with correct path
 
-      - name: Show directory tree
+      - name: Show project directory tree
         run: |
           tree -f -a -I '.git'
 
-      - name: Show directory tree of workspace
+      - name: Show directory structure of /home/runner/work/
         run: |
-          tree -f -a -I '.git' ${{ github.workspace }}
-
-      - name: Show directory structure of /home
-        run: |
-          tree -f -d -I '.git' /home
+          tree -f -d -I '.git' /home/runner/work/
