@@ -36,4 +36,4 @@ jobs:
 
       - name: Show directory structure of /home/runner/work/
         run: |
-          tree -f -d -I '.git' /home/runner/work/
+          tree -f -I '.git' /home/runner/work/
