@@ -62,11 +62,17 @@ jobs:
           cd ./publish/${{ matrix.os }}-${{ matrix.arch }}
           zip release-${{ matrix.os }}-${{ matrix.arch }}-${{ steps.version.outputs.version }}.zip *
 
+      - name: List files
+        run: ls -R
+
       - name: Upload Release Artifact
         uses: actions/upload-artifact@v4
         with:
           name: release-artifact
           path: ./publish/${{ matrix.os }}-${{ matrix.arch }}/release-${{ matrix.os }}-${{ matrix.arch }}-${{ steps.version.outputs.version }}.zip
+
+      - name: List files
+        run: ls -R
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
