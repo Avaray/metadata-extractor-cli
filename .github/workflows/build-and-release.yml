@@ -30,6 +30,9 @@ jobs:
         id: version
         run: echo ::set-output name=version::$(grep -oPm1 "(?<=<Version>)[^<]+" ./Extractor/Extractor.csproj)
 
+      - name: Tag version
+        run: git tag ${{ steps.version.outputs.version }}
+
       - name: Install dependencies
         run: dotnet restore
 
