@@ -38,7 +38,10 @@ jobs:
       #   run: dotnet publish --configuration Release --output ./publish
 
       - name: Publish single file executable
-        run: dotnet publish --configuration Release -p:PublishSingleFile=true --output ./publish-standalone-${{ matrix.os }}
+        run: dotnet publish --configuration Release -p:PublishSingleFile=true --output ./publish/${{ matrix.os }}-${{ matrix.arch }}
+
+      - name: List files
+        run: ls -R ./publish
 
   release:
     needs: build
