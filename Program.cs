@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using System.Reflection;
 using MetadataExtractor;
 
 class Program
@@ -21,6 +22,13 @@ class Program
         if (args.Length == 0 || args.Contains("-h") || args.Contains("--help"))
         {
             DisplayHelp();
+            return;
+        }
+
+        if (args.Contains("-v") || args.Contains("--version"))
+        {
+            var version = Assembly.GetExecutingAssembly().GetName().Version;
+            Console.WriteLine($"Extractor v{version}");
             return;
         }
 
@@ -142,7 +150,7 @@ class Program
         Console.WriteLine("  <file-path>           Path to a single image file.");
         Console.WriteLine("  -d <directory-path>   Path to a directory containing image files.");
         Console.WriteLine("  -o <output-file>      Path to the output file for saving the extracted metadata.");
-        Console.WriteLine("  -h, --help            Display help information.");
+        Console.WriteLine("  -v, --version         Display version.");
         Console.WriteLine();
         Console.WriteLine("Examples:");
         Console.WriteLine("  extractor image.jpg");
