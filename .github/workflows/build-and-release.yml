@@ -38,6 +38,16 @@ jobs:
           git config user.name ${{ secrets.DYGNITORZ_NAME }}
           git config user.email ${{ secrets.DYGNITORZ_EMAIL }}
 
+      - name: Display some stuff
+        run: |
+          echo "Version: ${{ steps.version.outputs.version }}"
+          echo "Ref: ${{ github.ref }}"
+          echo "Head ref: ${{ github.head_ref }}"
+          echo "Base ref: ${{ github.base_ref }}"
+          echo "Event name: ${{ github.event_name }}"
+          echo "Event path: ${{ github.event_path }}"
+          echo "Current directory: $PWD"
+
       - name: Install dependencies
         run: dotnet restore
 
