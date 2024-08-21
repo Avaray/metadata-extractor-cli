@@ -25,17 +25,13 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
+      # Get version from csproj file
+      - name: Get version
+        id: version
+        run: echo ::set-output name=version::$(grep -oPm1 "(?<=<Version>)[^<]+" ./Extractor/Extractor.csproj)
+
       - name: Install dependencies
         run: dotnet restore
-
-      # - name: Build
-      #   run: dotnet build --configuration Release --no-restore
-
-      # - name: Test
-      #   run: dotnet test --no-restore --verbosity normal
-
-      # - name: Publish Normal
-      #   run: dotnet publish --configuration Release --output ./publish
 
       - name: Publish single file executable
         run: dotnet publish -c Release -p:PublishSingleFile=true -p:DebugType=none -o ./publish/${{ matrix.os }}-${{ matrix.arch }}
@@ -43,27 +39,22 @@ jobs:
       - name: List files
         run: ls -R ./publish
 
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      # Create release artifact based on the OS and architecture, each articact needs to be named extractor-${{ matrix.os }}-${{ matrix.arch }}.zip, and inside archive there is only extractor binary
       - name: Create Release Artifact
         run: |
           cd ./publish/${{ matrix.os }}-${{ matrix.arch }}
-          zip release-${{ matrix.os }}-${{ matrix.arch }}.zip *
+          zip release-${{ matrix.os }}-${{ matrix.arch }}-${{ steps.version.outputs.version }}.zip *
 
       - name: Upload Release Artifact
         uses: actions/upload-artifact@v4
         with:
           name: release-artifact
-          path: ./publish/${{ matrix.os }}-${{ matrix.arch }}/release-${{ matrix.os }}-${{ matrix.arch }}.zip
+          path: ./publish/${{ matrix.os }}-${{ matrix.arch }}/release-${{ matrix.os }}-${{ matrix.arch }}-${{ steps.version.outputs.version }}.zip
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: ./publish/${{ matrix.os }}-${{ matrix.arch }}/release-${{ matrix.os }}-${{ matrix.arch }}.zip
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          files: ./publish/${{ matrix.os }}-${{ matrix.arch }}/release-${{ matrix.os }}-${{ matrix.arch }}-${{ steps.version.outputs.version }}.zip
+          tag_name: ${{ steps.version.outputs.version }}
+          token: ${{ secrets.DYGNITORZ_TOKEN }}
+          body: |
+            Release ${{ steps.version.outputs.version }}
