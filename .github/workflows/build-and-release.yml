@@ -34,8 +34,11 @@ jobs:
       - name: Test
         run: dotnet test --no-restore --verbosity normal
 
-      - name: Publish
+      - name: Publish Normal
         run: dotnet publish --configuration Release --output ./publish
+
+      - name: Publish single file executable
+        run: dotnet publish --configuration Release -r ${{ matrix.os }} -p:PublishSingleFile=true --output ./publish-standalone
 
   release:
     needs: build
