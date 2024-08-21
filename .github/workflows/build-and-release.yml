@@ -33,6 +33,11 @@ jobs:
       - name: Tag version
         run: git tag ${{ steps.version.outputs.version }}
 
+      - name: Push tag
+        run: git push origin ${{ steps.version.outputs.version }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.DYGNITORZ_TOKEN }}
+
       - name: Install dependencies
         run: dotnet restore
 
