@@ -55,27 +55,27 @@ jobs:
       - name: List Publish Directory
         run: ls -R ./publish
 
-      - name: Create Archives
+      - name: Create Archives for Linux and MacOS
+        if: matrix.platform != 'win-x64'
         run: |
-          mkdir -p ./archives  # Create the archives directory if it doesn't exist
-          if [ "${{ matrix.os }}" == "windows-latest" ]; then
-            if (Get-ChildItem "./publish/${{ matrix.platform }}").Count -gt 0 {
-              Compress-Archive -Path "./publish/${{ matrix.platform }}/*" -DestinationPath "./archives/extractor-${{ matrix.platform }}.zip"
-            }
-            if (Get-ChildItem "./publish/${{ matrix.platform }}-no-runtime").Count -gt 0 {
-              Compress-Archive -Path "./publish/${{ matrix.platform }}-no-runtime/*" -DestinationPath "./archives/extractor-${{ matrix.platform }}-no-runtime.zip"
-            }
-          else
-            if [ "$(ls -A ./publish/${{ matrix.platform }})" ]; then
-              cd ./publish/${{ matrix.platform }}
-              zip -r ../../archives/extractor-${{ matrix.platform }}.zip * 
-            fi
-            if [ "$(ls -A ./publish/${{ matrix.platform }}-no-runtime)" ]; then
-              cd ../${{ matrix.platform }}-no-runtime
-              zip -r ../../archives/extractor-${{ matrix.platform }}-no-runtime.zip *
-            fi
-          fi
+          mkdir -p ./archives
+          cd ./publish/${{ matrix.platform }}
+          tar -czf ../../archives/extractor-${{ matrix.platform }}.tar.gz *
+          cd ../${{ matrix.platform }}-no-runtime
+          tar -czf ../../archives/extractor-${{ matrix.platform }}-no-runtime.tar.gz *
+          cd ../..
         shell: bash
+
+      - name: Create Archives for Windows (use powershell)
+        if: matrix.platform == 'win-x64'
+        run: |
+          mkdir .\archives
+          cd .\publish\${{ matrix.platform }}
+          Compress-Archive -Path * -DestinationPath ..\..\archives\extractor-${{ matrix.platform }}.zip
+          cd ..\${{ matrix.platform }}-no-runtime
+          Compress-Archive -Path * -DestinationPath ..\..\archives\extractor-${{ matrix.platform }}-no-runtime.zip
+          cd ..\..
+        shell: powershell
 
       - name: List Archives
         run: ls -l ./archives
