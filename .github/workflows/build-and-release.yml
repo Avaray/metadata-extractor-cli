@@ -16,8 +16,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest] # [ubuntu-latest, windows-latest, macos-latest]
-        arch: [x64] # [x64, x86]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        arch: [x64, x86]
 
     steps:
       - uses: actions/checkout@v4
@@ -74,5 +74,3 @@ jobs:
           files: ./publish/${{ matrix.os }}-${{ matrix.arch }}/release-${{ matrix.os }}-${{ matrix.arch }}.zip
           tag_name: ${{ steps.version.outputs.version }}
           token: ${{ secrets.DYGNITORZ_TOKEN_OLD }}
-          body: |
-            Release ${{ steps.version.outputs.version }}
