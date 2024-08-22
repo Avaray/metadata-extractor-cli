@@ -85,6 +85,7 @@ class Program
             var imageFiles = System.IO.Directory.GetFiles(filePath, "*.*", System.IO.SearchOption.TopDirectoryOnly)
                 .Where(file => file.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
                                file.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase) ||
+                               file.EndsWith(".webp", StringComparison.OrdinalIgnoreCase) ||
                                file.EndsWith(".png", StringComparison.OrdinalIgnoreCase) ||
                                file.EndsWith(".gif", StringComparison.OrdinalIgnoreCase) ||
                                file.EndsWith(".tiff", StringComparison.OrdinalIgnoreCase))
