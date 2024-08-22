@@ -52,7 +52,7 @@ jobs:
       - name: Create Release Artifact
         run: |
           cd ./publish/${{ matrix.os }}-${{ matrix.arch }}
-          zip release-${{ matrix.os }}-${{ matrix.arch }}-${{ steps.version.outputs.version }}.zip *
+          zip release-${{ matrix.os }}-${{ matrix.arch }}.zip *
 
       - name: List files
         run: ls -R ./publish
