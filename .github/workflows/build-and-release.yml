@@ -96,5 +96,5 @@ jobs:
       - name: Download Archives
         uses: actions/download-artifact@v4
 
-      - name: List Archives
-        run: ls -l ./archives
+      - name: List downloaded files
+        run: ls -l
