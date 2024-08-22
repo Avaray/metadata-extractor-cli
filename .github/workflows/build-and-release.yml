@@ -55,9 +55,9 @@ jobs:
       - name: Create Archives
         run: |
           mkdir archives
-          cd ./publish${{ matrix.platform }}
+          cd ./publish/${{ matrix.platform }}
           zip ../archives/extractor-${{ matrix.platform }}.zip * 
-          cd ${{ matrix.platform }}-no-runtime
+          cd ./publish/${{ matrix.platform }}-no-runtime
           zip ../archives/extractor-${{ matrix.platform }}-no-runtime.zip *
           cd ../..
         shell: bash
