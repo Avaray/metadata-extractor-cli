@@ -8,9 +8,11 @@ on:
       - 'Program.cs'
       - 'packages.lock.json'
       - 'icon.ico'
+      - '.github/workflows/build-and-release.yml'
 
 jobs:
   build:
+    permissions: write-all
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
@@ -60,7 +62,7 @@ jobs:
       - name: Upload Release Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: release-artifact
+          name: ${{ matrix.os }}-${{ matrix.arch }}
           path: ./publish/${{ matrix.os }}-${{ matrix.arch }}/release-${{ matrix.os }}-${{ matrix.arch }}.zip
 
       - name: List files
@@ -71,6 +73,6 @@ jobs:
         with:
           files: ./publish/${{ matrix.os }}-${{ matrix.arch }}/release-${{ matrix.os }}-${{ matrix.arch }}.zip
           tag_name: ${{ steps.version.outputs.version }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.DYGNITORZ_TOKEN }}
           body: |
             Release ${{ steps.version.outputs.version }}
