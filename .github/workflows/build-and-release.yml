@@ -15,8 +15,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        arch: [x64, x86]
+        os: [ubuntu-latest] # [ubuntu-latest, windows-latest, macos-latest]
+        arch: [x64] # [x64, x86]
 
     steps:
       - uses: actions/checkout@v4
@@ -29,11 +29,6 @@ jobs:
       - name: Get Project Version
         id: version
         run: echo ::set-output name=version::$(grep -oPm1 "(?<=<Version>)[^<]+" ./metadata-extractor-cli.csproj)
-
-      - name: Configure Git
-        run: |
-          git config user.name ${{ secrets.DYGNITORZ_NAME }}
-          git config user.email ${{ secrets.DYGNITORZ_EMAIL }}
 
       - name: Tag version
         run: git tag ${{ steps.version.outputs.version }}
@@ -48,24 +43,16 @@ jobs:
         run: dotnet restore
 
       - name: Publish single file executable
-        run: dotnet publish -c Release -p:PublishSingleFile=true -p:DebugType=none -o ./publish/${{ matrix.os }}-${{ matrix.arch }}
+        run: dotnet publish -c Release -p:PublishSingleFile=true -o ./publish/${{ matrix.os }}-${{ matrix.arch }}
 
       - name: Create Release Artifact
-        run: |
-          cd ./publish/${{ matrix.os }}-${{ matrix.arch }}
-          zip release-${{ matrix.os }}-${{ matrix.arch }}.zip *
-
-      - name: List files
-        run: ls -R ./publish
+        run: zip ./publish/release-${{ matrix.os }}-${{ matrix.arch }}.zip *
 
       - name: Upload Release Artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.os }}-${{ matrix.arch }}
           path: ./publish/${{ matrix.os }}-${{ matrix.arch }}/release-${{ matrix.os }}-${{ matrix.arch }}.zip
-
-      - name: List files
-        run: ls -R
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
