@@ -8,7 +8,6 @@ on:
       - 'Program.cs'
       - 'packages.lock.json'
       - 'icon.ico'
-      - '.github/workflows/build-and-release.yml'
 
 jobs:
   build:
@@ -73,6 +72,6 @@ jobs:
         with:
           files: ./publish/${{ matrix.os }}-${{ matrix.arch }}/release-${{ matrix.os }}-${{ matrix.arch }}.zip
           tag_name: ${{ steps.version.outputs.version }}
-          token: ${{ secrets.DYGNITORZ_TOKEN }}
+          token: ${{ secrets.DYGNITORZ_TOKEN_OLD }}
           body: |
             Release ${{ steps.version.outputs.version }}
