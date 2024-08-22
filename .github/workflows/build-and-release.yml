@@ -47,25 +47,25 @@ jobs:
         run: dotnet restore
 
       - name: Publish Single File
-        run: dotnet publish -c Release -p:PublishSingleFile=true -p:DebugType=none -o ./publish/${{ matrix.os }}-${{ matrix.platform }}
+        run: dotnet publish -c Release -p:PublishSingleFile=true -p:DebugType=none -o ./publish/${{ matrix.platform }}
 
       - name: Publish Single File without .NET Runtime
-        run: dotnet publish -c Release -p:PublishSingleFile=true -p:SelfContained=false -p:DebugType=none -o ./publish/${{ matrix.os }}-${{ matrix.platform }}-no-runtime
+        run: dotnet publish -c Release -p:PublishSingleFile=true -p:SelfContained=false -p:DebugType=none -o ./publish/${{ matrix.platform }}-no-runtime
 
       - name: Create Archives
         run: |
           mkdir archives
-          cd ./publish/${{ matrix.os }}-${{ matrix.platform }}
-          zip ../archives/extractor-${{ matrix.os }}-${{ matrix.platform }}.zip * 
-          cd ../${{ matrix.os }}-${{ matrix.platform }}-no-runtime
-          zip ../archives/extractor-${{ matrix.os }}-${{ matrix.platform }}-no-runtime.zip *
+          cd ./publish${{ matrix.platform }}
+          zip ../archives/extractor-${{ matrix.platform }}.zip * 
+          cd ${{ matrix.platform }}-no-runtime
+          zip ../archives/extractor-${{ matrix.platform }}-no-runtime.zip *
           cd ../..
         shell: bash
 
       - name: Upload Archives
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.os }}-${{ matrix.platform }}
+          name: ${{ matrix.platform }}
           path: ./archives/*.zip
 
   release:
