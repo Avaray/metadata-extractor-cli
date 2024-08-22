@@ -30,7 +30,7 @@ jobs:
 
       - name: Get Project Version
         id: version
-        run: echo ::set-output name=version::$(grep -oPm1 "(?<=<Version>)[^<]+" ./metadata-extractor-cli.csproj)
+        run: echo "version=$(grep -oPm1 '(?<=<Version>)[^<]+' ./metadata-extractor-cli.csproj)" >> $GITHUB_ENV
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -38,13 +38,16 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Tag version
-        run: git tag ${{ steps.version.outputs.version }}
+        run: git tag ${{ env.version }}
+
+      - name: Push Tags
+        run: git push origin --tags
 
       - name: Install dependencies
         run: dotnet restore
 
       - name: Publish Single File
-        run: dotnet publish -c Release -p:PublishSingleFile=true -p:DebugType=none -p:PublishTrimmed=true -o ./publish/${{ matrix.os }}-${{ matrix.platform }}
+        run: dotnet publish -c Release -p:PublishSingleFile=true -p:DebugType=none -o ./publish/${{ matrix.os }}-${{ matrix.platform }}
 
       - name: Publish Single File without .NET Runtime
         run: dotnet publish -c Release -p:PublishSingleFile=true -p:SelfContained=false -p:DebugType=none -o ./publish/${{ matrix.os }}-${{ matrix.platform }}-no-runtime
