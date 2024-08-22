@@ -27,8 +27,9 @@ class Program
 
         if (args.Contains("-v") || args.Contains("--version"))
         {
-            var version = Assembly.GetExecutingAssembly().GetName().Version;
-            Console.WriteLine($"Extractor v{version}");
+            var assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+            var semVer = assemblyVersion!.ToString(3);
+            Console.WriteLine($"Extractor v{semVer}");
             return;
         }
 
