@@ -52,15 +52,21 @@ jobs:
       - name: Publish Single File without .NET Runtime
         run: dotnet publish -c Release -p:PublishSingleFile=true -p:SelfContained=false -p:DebugType=none -o ./publish/${{ matrix.platform }}-no-runtime
 
+      - name: List Publish Directory
+        run: ls -R ./publish
+
       - name: Create Archives
         run: |
           mkdir -p ./archives
           cd ./publish/${{ matrix.platform }}
-          zip ../../archives/extractor-${{ matrix.platform }}.zip * 
-          cd ./publish/${{ matrix.platform }}-no-runtime
+          zip ../../archives/extractor-${{ matrix.platform }}.zip *
+          cd ../${{ matrix.platform }}-no-runtime
           zip ../../archives/extractor-${{ matrix.platform }}-no-runtime.zip *
           cd ../..
         shell: bash
+
+      - name: List Archives
+        run: ls -l ./archives
 
       - name: Upload Archives
         uses: actions/upload-artifact@v4
