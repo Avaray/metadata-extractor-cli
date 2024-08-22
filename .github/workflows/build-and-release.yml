@@ -57,12 +57,24 @@ jobs:
 
       - name: Create Archives
         run: |
-          mkdir -p ./archives
-          cd ./publish/${{ matrix.platform }}
-          zip ../../archives/extractor-${{ matrix.platform }}.zip *
-          cd ../${{ matrix.platform }}-no-runtime
-          zip ../../archives/extractor-${{ matrix.platform }}-no-runtime.zip *
-          cd ../..
+          mkdir -p ./archives  # Create the archives directory if it doesn't exist
+          if [ "${{ matrix.os }}" == "windows-latest" ]; then
+            if (Get-ChildItem "./publish/${{ matrix.platform }}").Count -gt 0 {
+              Compress-Archive -Path "./publish/${{ matrix.platform }}/*" -DestinationPath "./archives/extractor-${{ matrix.platform }}.zip"
+            }
+            if (Get-ChildItem "./publish/${{ matrix.platform }}-no-runtime").Count -gt 0 {
+              Compress-Archive -Path "./publish/${{ matrix.platform }}-no-runtime/*" -DestinationPath "./archives/extractor-${{ matrix.platform }}-no-runtime.zip"
+            }
+          else
+            if [ "$(ls -A ./publish/${{ matrix.platform }})" ]; then
+              cd ./publish/${{ matrix.platform }}
+              zip -r ../../archives/extractor-${{ matrix.platform }}.zip * 
+            fi
+            if [ "$(ls -A ./publish/${{ matrix.platform }}-no-runtime)" ]; then
+              cd ../${{ matrix.platform }}-no-runtime
+              zip -r ../../archives/extractor-${{ matrix.platform }}-no-runtime.zip *
+            fi
+          fi
         shell: bash
 
       - name: List Archives
