@@ -144,7 +144,7 @@ class Program
 
     private static void DisplayHelp()
     {
-        Console.WriteLine("Usage: extractor <file-path> [-d <directory-path>] [-o <output-file>] [-h|--help]");
+        Console.WriteLine("Usage: extractor <file-path> [-d <directory-path>] [-o <output-file>]");
         Console.WriteLine();
         Console.WriteLine("Options:");
         Console.WriteLine("  <file-path>           Path to a single image file.");
