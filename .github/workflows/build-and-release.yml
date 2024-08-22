@@ -71,6 +71,6 @@ jobs:
         with:
           files: ./publish/${{ matrix.os }}-${{ matrix.arch }}/release-${{ matrix.os }}-${{ matrix.arch }}.zip
           tag_name: ${{ steps.version.outputs.version }}
-          token: ${{ secrets.DYGNITORZ_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           body: |
             Release ${{ steps.version.outputs.version }}
