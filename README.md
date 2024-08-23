@@ -1,4 +1,4 @@
-# Image Metadata Extractor CLI
+# 🧬 Image Metadata Extractor CLI
 
 [![Build and Release](https://github.com/Avaray/metadata-extractor-cli/actions/workflows/build-and-release.yml/badge.svg)](https://github.com/Avaray/metadata-extractor-cli/actions/workflows/build-and-release.yml)
 
