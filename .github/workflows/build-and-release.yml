@@ -63,9 +63,9 @@ jobs:
         run: |
           mkdir -p ./archives
           cd ./publish/${{ matrix.platform }}
-          tar -czf ../../archives/extractor-${{ matrix.platform }}.tar.gz *
+          zip -r ../../archives/extractor-${{ matrix.platform }}.zip *
           cd ../${{ matrix.platform }}-no-runtime
-          tar -czf ../../archives/extractor-${{ matrix.platform }}-no-runtime.tar.gz *
+          zip -r ../../archives/extractor-${{ matrix.platform }}-no-runtime.zip *
           cd ../..
         shell: bash
 
@@ -79,6 +79,9 @@ jobs:
           Compress-Archive -Path * -DestinationPath ..\..\archives\extractor-${{ matrix.platform }}-no-runtime.zip
           cd ..\..
         shell: powershell
+
+      - name: Show Tree
+        run: tree
 
       - name: Upload Archives
         uses: actions/upload-artifact@v4
