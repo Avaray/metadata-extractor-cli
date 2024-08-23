@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using System.Reflection;
 using MetadataExtractor;
+using System.Text.RegularExpressions;
 
 class Program
 {
@@ -41,6 +42,7 @@ class Program
         bool includeSubdirectories = false;
         string filePath = args[0];
         string? filterString = null;
+        string? regexPattern = null;
 
         for (int i = 0; i < args.Length; i++)
         {
@@ -85,9 +87,21 @@ class Program
                     return;
                 }
             }
+            else if (args[i] == "-s")
+            {
+                if (i + 1 < args.Length)
+                {
+                    regexPattern = args[++i];
+                }
+                else
+                {
+                    Console.WriteLine("Error: -s option requires a search string.");
+                    return;
+                }
+            }
             else if (i == 0)
             {
-                // If it's not a -d, -o, -r, or -t option and it's the first argument, treat it as the file path
+                // If option is not provided, assume it is a file path
                 filePath = args[i];
             }
         }
@@ -108,7 +122,7 @@ class Program
                 .Where(file => IsValidFile(file))
                 .ToArray();
 
-            var tasks = imageFiles.Select(imagePath => Task.Run(() => ExtractMetadata(imagePath, filterString)));
+            var tasks = imageFiles.Select(imagePath => Task.Run(() => ExtractMetadata(imagePath, filterString, regexPattern)));
             var filteredMetadata = await Task.WhenAll(tasks);
             allMetadata.AddRange(filteredMetadata.Where(metadata => metadata != null)!);
         }
@@ -122,7 +136,7 @@ class Program
 
             if (IsValidFile(filePath))
             {
-                var metadata = ExtractMetadata(filePath, filterString);
+                var metadata = ExtractMetadata(filePath, filterString, regexPattern);
                 if (metadata != null)
                 {
                     allMetadata.Add(metadata);
@@ -163,45 +177,60 @@ class Program
         };
     }
 
-    private static ImageMetadata? ExtractMetadata(string imagePath, string? filterString = null)
-{
-    var directories = ImageMetadataReader.ReadMetadata(imagePath);
-    var metadataTags = new List<MetadataTag>();
-
-    foreach (var directory in directories)
+    private static ImageMetadata? ExtractMetadata(string imagePath, string? filterString = null, string? regexPattern = null)
     {
-        foreach (var tag in directory.Tags)
+        try
         {
-            // Convert filterString and tag.Name to lowercase for case-insensitive matching
-            if (filterString != null && !tag.Name.ToLowerInvariant().Contains(filterString.ToLowerInvariant()))
-                continue;
+            var directories = ImageMetadataReader.ReadMetadata(imagePath);
+            var metadataTags = new List<MetadataTag>();
 
-            metadataTags.Add(new MetadataTag
+            foreach (var directory in directories)
             {
-                DirectoryName = directory.Name,
-                TagName = tag.Name,
-                Description = tag.Description ?? string.Empty
-            });
+                foreach (var tag in directory.Tags)
+                {
+                    // Filter by TagName
+                    if (filterString != null && !tag.Name.ToLowerInvariant().Contains(filterString.ToLowerInvariant()))
+                        continue;
+
+                    // Filter by regex in Description
+                    if (regexPattern != null)
+                    {
+                        var regex = new Regex(regexPattern);
+                        if (!regex.IsMatch(tag.Description ?? string.Empty))
+                            continue;
+                    }
+
+                    metadataTags.Add(new MetadataTag
+                    {
+                        DirectoryName = directory.Name,
+                        TagName = tag.Name,
+                        Description = tag.Description ?? string.Empty
+                    });
+                }
+            }
+
+            // Only return ImageMetadata if there are tags matching the filters
+            if (metadataTags.Count == 0)
+            {
+                return null;
+            }
+
+            return new ImageMetadata
+            {
+                FilePath = imagePath,
+                FileName = System.IO.Path.GetFileName(imagePath),
+                Tags = metadataTags
+            };
+        }
+        catch (Exception)
+        {
+            return null;
         }
     }
 
-    // Only return ImageMetadata if there are tags matching the filter
-    if (metadataTags.Count == 0)
-    {
-        return null; // Return null if no matching tags
-    }
-
-    return new ImageMetadata
-    {
-        FilePath = imagePath,
-        FileName = System.IO.Path.GetFileName(imagePath),
-        Tags = metadataTags
-    };
-}
-
     private static void DisplayHelp()
     {
-        Console.WriteLine("Usage: extractor <file-path> [-d <directory-path>] [-o <output-file>] [-r] [-t <filter-string>]");
+        Console.WriteLine("Usage: extractor <file-path> [-d <directory-path>] [-o <output-file>] [-r]");
         Console.WriteLine();
         Console.WriteLine("Options:");
         Console.WriteLine("  <file-path>           Path to a single image file.");
@@ -209,6 +238,7 @@ class Program
         Console.WriteLine("  -o <output-file>      Path to the output file for saving the extracted metadata.");
         Console.WriteLine("  -r                    Include subdirectories when processing a directory.");
         Console.WriteLine("  -t <filter-string>    Filter metadata by TagName.");
+        Console.WriteLine("  -s <search-string>    Filter metadata by Description using string search.");
         Console.WriteLine("  -v, --version         Display version.");
         Console.WriteLine();
         Console.WriteLine("Examples:");
@@ -217,6 +247,7 @@ class Program
         Console.WriteLine("  extractor -d images_directory");
         Console.WriteLine("  extractor -d images_directory -o output.json");
         Console.WriteLine("  extractor -d images_directory -r");
-        Console.WriteLine("  extractor -d images_directory -t \"Image Height\"");
+        Console.WriteLine("  extractor -d images_directory -t \"textual tata\"");
+        Console.WriteLine("  extractor -d images_directory -s \"word\"");
     }
 }

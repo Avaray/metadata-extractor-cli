@@ -56,6 +56,22 @@ extractor -d <directory-path> -r
 extractor <file-path> -o <output-file>
 ```
 
+### Experimental Options
+
+> These options are experimental and might not work as expected. Pretty sure they will be changed or removed in future versions. Combining them together might not work.
+
+- **Filter Tag Name**: Return metadata with specific tag name. Ignore all other tags.
+
+```
+extractor -d <directory-path> -t <tag-name>
+```
+
+- **Search in Tag Description**: Filter images by searching in tag description. Using [Regex](https://learn.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference) is possible, but might not work as expected. Something like `-s '[\d\w]{10}'` should work.
+
+```
+extractor -d <directory-path> -s <search-string>
+```
+
 ## Development
 
 1. **Prerequisites**: Ensure you have the [.NET SDK](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) (version 8.0 or higher) installed on your machine. You can download it from the official [.NET website](https://dotnet.microsoft.com/download). You can check your current version by running the following command:
@@ -94,4 +110,5 @@ I might add more features in the future. I'm considering following changes:
 - [x] Extract recursive metadata extraction `-r` option.
 - [x] Add checks for invalid file types. To print message rather than throwing an exception.
 - [ ] Lower the required .NET version.
-- [ ] Possibility to extract only specific tags. For example `PNG-tEXt`.
+- [x] Possibility to filter images by "Tag Name".
+- [x] Possibility to filter images with [Regex](https://en.wikipedia.org/wiki/Regular_expression).
