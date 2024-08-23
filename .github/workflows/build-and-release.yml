@@ -87,7 +87,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: release-${{ matrix.platform }}
-          path: ./archives/${{ matrix.platform }}
+          path: ./archives/
 
   release:
     needs: build
