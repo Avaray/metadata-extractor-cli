@@ -67,6 +67,9 @@ jobs:
           name: release-${{ matrix.platform }}-no-runtime
           path: ./publish/${{ matrix.platform }}-no-runtime
 
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
   release:
     needs: build
     runs-on: ubuntu-latest
@@ -85,4 +88,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.DYGNITORZ_TOKEN_OLD }}
         with:
-          tag_name: ${{ steps.build.outputs.version }}
+          tag_name: ${{ needs.build.outputs.version }}
