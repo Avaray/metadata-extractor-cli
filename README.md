@@ -109,6 +109,6 @@ I might add more features in the future. I'm considering following changes:
 
 - [x] Add recursive metadata extraction `-r` option.
 - [x] Add checks for invalid file types.
-- [ ] Lower the required .NET version.
 - [x] Possibility to filter images by "Tag Name".
 - [x] Possibility to filter images by searching in "Tag Description"
+- [ ] Lower the required .NET version. Not sure how low I can go.
