@@ -58,17 +58,33 @@ jobs:
       - name: List Publish Directory
         run: ls -l ./publish
 
-      - name: Upload Default Executable
+      - name: Create Archives for Linux and MacOS
+        if: matrix.platform != 'win-x64'
+        run: |
+          mkdir -p ./archives
+          cd ./publish/${{ matrix.platform }}
+          tar -czf ../../archives/extractor-${{ matrix.platform }}.tar.gz *
+          cd ../${{ matrix.platform }}-no-runtime
+          tar -czf ../../archives/extractor-${{ matrix.platform }}-no-runtime.tar.gz *
+          cd ../..
+        shell: bash
+
+      - name: Create Archives for Windows (use powershell)
+        if: matrix.platform == 'win-x64'
+        run: |
+          mkdir .\archives
+          cd .\publish\${{ matrix.platform }}
+          Compress-Archive -Path * -DestinationPath ..\..\archives\extractor-${{ matrix.platform }}.zip
+          cd ..\${{ matrix.platform }}-no-runtime
+          Compress-Archive -Path * -DestinationPath ..\..\archives\extractor-${{ matrix.platform }}-no-runtime.zip
+          cd ..\..
+        shell: powershell
+
+      - name: Upload Archives
         uses: actions/upload-artifact@v4
         with:
           name: release-${{ matrix.platform }}
-          path: ./publish/${{ matrix.platform }}
-
-      - name: Upload Executable without .NET Runtime
-        uses: actions/upload-artifact@v4
-        with:
-          name: release-${{ matrix.platform }}-no-runtime
-          path: ./publish/${{ matrix.platform }}-no-runtime
+          path: ./archives/${{ matrix.platform }}
 
   release:
     needs: build
@@ -83,16 +99,12 @@ jobs:
       - name: List downloaded files
         run: ls -l
 
+      - name: Show Tree
+        run: tree
+
       - name: Create Release
         uses: softprops/action-gh-release@v2
         env:
           GITHUB_TOKEN: ${{ secrets.DYGNITORZ_TOKEN_OLD }}
         with:
           tag_name: ${{ needs.build.outputs.version }}
-          files: |
-            release-linux-x64/*
-            release-linux-x64-no-runtime/*
-            release-win-x64/*
-            release-win-x64-no-runtime/*
-            release-osx-x64/*
-            release-osx-x64-no-runtime/*
