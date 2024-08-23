@@ -66,7 +66,7 @@ extractor <file-path> -o <output-file>
 extractor -d <directory-path> -t <tag-name>
 ```
 
-- **Search in Tag Description**: Filter images by searching in tag description. Using [Regex](https://learn.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference) is possible, but might not work as expected. Something like `-s '[\d\w]{10}'` should work.
+- **Search in Tag Description**: Return metadata with description containing specific string. Ignore all other tags. Using [Regex](https://learn.microsoft.com/en-us/dotnet/standard/base-types/regular-expression-language-quick-reference) is possible, but might not work as expected. Something like `-s '[\d\w]{10}'` should work.
 
 ```
 extractor -d <directory-path> -s <search-string>
