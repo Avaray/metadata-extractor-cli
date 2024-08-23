@@ -4,6 +4,8 @@ using MetadataExtractor;
 
 class Program
 {
+    private static readonly JsonSerializerOptions jsonSerializerOptions = new() { WriteIndented = true };
+
     public class ImageMetadata
     {
         public string FilePath { get; set; } = string.Empty; // Added FilePath field
@@ -107,7 +109,7 @@ class Program
             allMetadata.Add(ExtractMetadata(filePath));
         }
 
-        string jsonOutput = JsonSerializer.Serialize(allMetadata, new JsonSerializerOptions { WriteIndented = true });
+        string jsonOutput = JsonSerializer.Serialize(allMetadata, jsonSerializerOptions);
 
         if (outputPath != null)
         {
