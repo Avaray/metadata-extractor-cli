@@ -100,7 +100,7 @@ jobs:
         uses: actions/download-artifact@v4
 
       - name: List downloaded files
-        run: ls -l
+        run: ls -l -R
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
