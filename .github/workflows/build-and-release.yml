@@ -77,8 +77,11 @@ jobs:
       #     cd ..\..
       #   shell: powershell
 
-      - name: List Archives
-        run: ls -l ./archives
+      # - name: List Archives
+      #   run: ls -l ./archives
+
+      - name: List Publish Directory
+        run: ls -l ./publish
 
       - name: Upload Archives
         uses: actions/upload-artifact@v4
