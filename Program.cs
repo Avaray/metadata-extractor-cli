@@ -184,8 +184,8 @@ class Program
         Console.WriteLine();
         Console.WriteLine("Examples:");
         Console.WriteLine("  extractor image.jpg");
-        Console.WriteLine("  extractor -d images_directory");
         Console.WriteLine("  extractor image.jpg -o output.json");
+        Console.WriteLine("  extractor -d images_directory");
         Console.WriteLine("  extractor -d images_directory -o output.json");
         Console.WriteLine("  extractor -d images_directory -r");
     }
