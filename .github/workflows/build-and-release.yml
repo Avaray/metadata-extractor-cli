@@ -25,12 +25,15 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+
     steps:
       - uses: actions/checkout@v4
 
       - name: Get Project Version
         id: version
-        run: echo "version=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' ./metadata-extractor-cli.csproj)" >> $GITHUB_ENV
+        run: echo "version=$(sed -n 's:.*<Version>\(.*\)</Version>.*:\1:p' ./metadata-extractor-cli.csproj)" >> $GITHUB_OUTPUT
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
@@ -38,7 +41,7 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Tag version
-        run: git tag ${{ env.version }}
+        run: git tag ${{ steps.version.outputs.version }}
 
       - name: Push Tags
         run: git push origin --tags
@@ -66,9 +69,6 @@ jobs:
         with:
           name: release-${{ matrix.platform }}-no-runtime
           path: ./publish/${{ matrix.platform }}-no-runtime
-
-    outputs:
-      version: ${{ steps.version.outputs.version }}
 
   release:
     needs: build
