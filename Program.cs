@@ -92,12 +92,7 @@ class Program
 
             var searchOption = includeSubdirectories ? System.IO.SearchOption.AllDirectories : System.IO.SearchOption.TopDirectoryOnly;
             var imageFiles = System.IO.Directory.GetFiles(filePath, "*.*", searchOption)
-                .Where(file => file.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
-                               file.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase) ||
-                               file.EndsWith(".webp", StringComparison.OrdinalIgnoreCase) ||
-                               file.EndsWith(".png", StringComparison.OrdinalIgnoreCase) ||
-                               file.EndsWith(".gif", StringComparison.OrdinalIgnoreCase) ||
-                               file.EndsWith(".tiff", StringComparison.OrdinalIgnoreCase))
+                .Where(file => IsValidFile(file))
                 .ToArray();
 
             var tasks = imageFiles.Select(imagePath => Task.Run(() => ExtractMetadata(imagePath)));
@@ -111,7 +106,15 @@ class Program
                 return;
             }
 
-            allMetadata.Add(ExtractMetadata(filePath));
+            if (IsValidFile(filePath))
+            {
+                allMetadata.Add(ExtractMetadata(filePath));
+            }
+            else
+            {
+                Console.WriteLine($"Invalid file type: {filePath}");
+                return;
+            }
         }
 
         string jsonOutput = JsonSerializer.Serialize(allMetadata, jsonSerializerOptions);
@@ -127,6 +130,21 @@ class Program
         }
     }
 
+    private static bool IsValidFile(string filePath)
+    {
+        string extension = System.IO.Path.GetExtension(filePath).ToLowerInvariant();
+        return extension switch
+        {
+            ".jpg" or ".jpeg" or ".tif" or ".tiff" or ".webp" or 
+            ".png" or ".bmp" or ".gif" or ".ico" or ".pcx" or 
+            ".heif" or ".heic" or ".avif" or ".psd" or 
+            ".nef" or ".cr2" or ".orf" or ".arw" or 
+            ".rw2" or ".rwl" or ".srw" or 
+            ".wav" or ".avi" or ".mov" or ".mp4" => true,
+            _ => false,
+        };
+    }
+
     private static ImageMetadata ExtractMetadata(string imagePath)
     {
         var directories = ImageMetadataReader.ReadMetadata(imagePath);
@@ -140,7 +158,7 @@ class Program
                 {
                     DirectoryName = directory.Name,
                     TagName = tag.Name,
-                    Description = tag.Description!
+                    Description = tag.Description ?? string.Empty
                 });
             }
         }

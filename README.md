@@ -90,7 +90,7 @@ Creating a working CLI took me a little over an hour. However, messing around wi
 
 I might add more features in the future. I'm considering following changes:
 
-- [ ] Extract metadata from images in a recursive manner (as default). This feature will break current JSON output format (it's array of objects now).
-- [ ] Add checks for invalid file types. To print message rather than throwing an exception.
+- [x] Extract recursive metadata extraction `-r` option.
+- [x] Add checks for invalid file types. To print message rather than throwing an exception.
 - [ ] Lower the required .NET version
 <!-- - Possibility to extract only specific tags. For example `PNG-tEXt`. -->
