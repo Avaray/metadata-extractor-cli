@@ -6,6 +6,7 @@ class Program
 {
     public class ImageMetadata
     {
+        public string FilePath { get; set; } = string.Empty; // Added FilePath field
         public string FileName { get; set; } = string.Empty;
         public List<MetadataTag> Tags { get; set; } = [];
     }
@@ -139,6 +140,7 @@ class Program
 
         return new ImageMetadata
         {
+            FilePath = imagePath, // Set the FilePath field
             FileName = System.IO.Path.GetFileName(imagePath),
             Tags = metadataTags
         };
