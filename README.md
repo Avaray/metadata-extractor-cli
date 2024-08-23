@@ -15,7 +15,7 @@ This tool is designed for developers who need to quickly access metadata from im
 
 - **Programming Language**: [C#](https://dotnet.microsoft.com/en-us/languages/csharp)
 - **Framework**: [.NET 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0)
-- **Metadata Extraction Library**: [MetadataExtractor](https://github.com/drewnoakes/metadata-extractor-dotnet) (2.8.1)
+- **Metadata Extraction Library**: [MetadataExtractor](https://github.com/drewnoakes/metadata-extractor-dotnet)
 - **JSON Serialization**: [System.Text.Json](https://learn.microsoft.com/en-us/dotnet/standard/serialization/system-text-json/how-to) (part of .NET)
 
 ## Usage
@@ -95,5 +95,5 @@ I might add more features in the future. I'm considering following changes:
 
 - [x] Extract recursive metadata extraction `-r` option.
 - [x] Add checks for invalid file types. To print message rather than throwing an exception.
-- [ ] Lower the required .NET version
+- [ ] Lower the required .NET version.
 - [ ] Possibility to extract only specific tags. For example `PNG-tEXt`.
