@@ -44,7 +44,7 @@ extractor <file-path>
 extractor -d <directory-path>
 ```
 
-- **Directory and Subdirectories**: Extract metadata from all images recursively in a specified directory.
+- **Directory Recursive**: Extract metadata from all images in a specified directory and all subdirectories.
 
 ```
 extractor -d <directory-path> -r
