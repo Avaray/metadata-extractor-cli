@@ -53,9 +53,7 @@ extractor -d <directory-path> -r
 - **Output to File**: Save the extracted metadata to a JSON file.
 
 ```
-
 extractor <file-path> -o <output-file>
-
 ```
 
 ## Development
