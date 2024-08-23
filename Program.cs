@@ -7,7 +7,7 @@ class Program
     public class ImageMetadata
     {
         public string FileName { get; set; } = string.Empty;
-        public List<MetadataTag> Tags { get; set; } = new List<MetadataTag>();
+        public List<MetadataTag> Tags { get; set; } = [];
     }
 
     public class MetadataTag
@@ -72,7 +72,7 @@ class Program
             }
         }
 
-        List<ImageMetadata> allMetadata = new List<ImageMetadata>();
+        List<ImageMetadata> allMetadata = [];
 
         if (isDirectory)
         {
