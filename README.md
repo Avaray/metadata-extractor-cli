@@ -107,8 +107,8 @@ Creating a working CLI took me a little over an hour. However, messing around wi
 
 I might add more features in the future. I'm considering following changes:
 
-- [x] Extract recursive metadata extraction `-r` option.
-- [x] Add checks for invalid file types. To print message rather than throwing an exception.
+- [x] Add recursive metadata extraction `-r` option.
+- [x] Add checks for invalid file types.
 - [ ] Lower the required .NET version.
 - [x] Possibility to filter images by "Tag Name".
 - [x] Possibility to filter images by searching in "Tag Description"
