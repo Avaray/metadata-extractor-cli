@@ -52,30 +52,30 @@ jobs:
       - name: Publish Single File without .NET Runtime
         run: dotnet publish -c Release -p:PublishSingleFile=true -p:SelfContained=false -p:DebugType=none -o ./publish/${{ matrix.platform }}-no-runtime
 
-      - name: List Publish Directory
-        run: ls -R ./publish
+      # - name: List Publish Directory
+      #   run: ls -R ./publish
 
-      - name: Create Archives for Linux and MacOS
-        if: matrix.platform != 'win-x64'
-        run: |
-          mkdir -p ./archives
-          cd ./publish/${{ matrix.platform }}
-          tar -czf ../../archives/extractor-${{ matrix.platform }}.tar.gz *
-          cd ../${{ matrix.platform }}-no-runtime
-          tar -czf ../../archives/extractor-${{ matrix.platform }}-no-runtime.tar.gz *
-          cd ../..
-        shell: bash
+      # - name: Create Archives for Linux and MacOS
+      #   if: matrix.platform != 'win-x64'
+      #   run: |
+      #     mkdir -p ./archives
+      #     cd ./publish/${{ matrix.platform }}
+      #     tar -czf ../../archives/extractor-${{ matrix.platform }}.tar.gz *
+      #     cd ../${{ matrix.platform }}-no-runtime
+      #     tar -czf ../../archives/extractor-${{ matrix.platform }}-no-runtime.tar.gz *
+      #     cd ../..
+      #   shell: bash
 
-      - name: Create Archives for Windows (use powershell)
-        if: matrix.platform == 'win-x64'
-        run: |
-          mkdir .\archives
-          cd .\publish\${{ matrix.platform }}
-          Compress-Archive -Path * -DestinationPath ..\..\archives\extractor-${{ matrix.platform }}.zip
-          cd ..\${{ matrix.platform }}-no-runtime
-          Compress-Archive -Path * -DestinationPath ..\..\archives\extractor-${{ matrix.platform }}-no-runtime.zip
-          cd ..\..
-        shell: powershell
+      # - name: Create Archives for Windows (use powershell)
+      #   if: matrix.platform == 'win-x64'
+      #   run: |
+      #     mkdir .\archives
+      #     cd .\publish\${{ matrix.platform }}
+      #     Compress-Archive -Path * -DestinationPath ..\..\archives\extractor-${{ matrix.platform }}.zip
+      #     cd ..\${{ matrix.platform }}-no-runtime
+      #     Compress-Archive -Path * -DestinationPath ..\..\archives\extractor-${{ matrix.platform }}-no-runtime.zip
+      #     cd ..\..
+      #   shell: powershell
 
       - name: List Archives
         run: ls -l ./archives
@@ -83,8 +83,14 @@ jobs:
       - name: Upload Archives
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.platform }}
-          path: ./archives/*
+          name: release-${{ matrix.platform }}
+          path: ./publish/${{ matrix.platform }}
+
+      - name: Upload Archives without .NET Runtime
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ matrix.platform }}-no-runtime
+          path: ./publish/${{ matrix.platform }}-no-runtime
 
   release:
     needs: build
