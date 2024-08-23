@@ -40,6 +40,7 @@ class Program
         bool isDirectory = false;
         bool includeSubdirectories = false;
         string filePath = args[0];
+        string? filterString = null;
 
         for (int i = 0; i < args.Length; i++)
         {
@@ -72,9 +73,21 @@ class Program
             {
                 includeSubdirectories = true;
             }
+            else if (args[i] == "-t")
+            {
+                if (i + 1 < args.Length)
+                {
+                    filterString = args[++i];
+                }
+                else
+                {
+                    Console.WriteLine("Error: -t option requires a filter string.");
+                    return;
+                }
+            }
             else if (i == 0)
             {
-                // If it's not a -d, -o, or -r option and it's the first argument, treat it as the file path
+                // If it's not a -d, -o, -r, or -t option and it's the first argument, treat it as the file path
                 filePath = args[i];
             }
         }
@@ -95,8 +108,9 @@ class Program
                 .Where(file => IsValidFile(file))
                 .ToArray();
 
-            var tasks = imageFiles.Select(imagePath => Task.Run(() => ExtractMetadata(imagePath)));
-            allMetadata.AddRange(await Task.WhenAll(tasks));
+            var tasks = imageFiles.Select(imagePath => Task.Run(() => ExtractMetadata(imagePath, filterString)));
+            var filteredMetadata = await Task.WhenAll(tasks);
+            allMetadata.AddRange(filteredMetadata.Where(metadata => metadata != null)!);
         }
         else
         {
@@ -108,7 +122,11 @@ class Program
 
             if (IsValidFile(filePath))
             {
-                allMetadata.Add(ExtractMetadata(filePath));
+                var metadata = ExtractMetadata(filePath, filterString);
+                if (metadata != null)
+                {
+                    allMetadata.Add(metadata);
+                }
             }
             else
             {
@@ -135,17 +153,17 @@ class Program
         string extension = System.IO.Path.GetExtension(filePath).ToLowerInvariant();
         return extension switch
         {
-            ".jpg" or ".jpeg" or ".tif" or ".tiff" or ".webp" or 
-            ".png" or ".bmp" or ".gif" or ".ico" or ".pcx" or 
-            ".heif" or ".heic" or ".avif" or ".psd" or 
-            ".nef" or ".cr2" or ".orf" or ".arw" or 
-            ".rw2" or ".rwl" or ".srw" or 
+            ".jpg" or ".jpeg" or ".tif" or ".tiff" or ".webp" or
+            ".png" or ".bmp" or ".gif" or ".ico" or ".pcx" or
+            ".heif" or ".heic" or ".avif" or ".psd" or
+            ".nef" or ".cr2" or ".orf" or ".arw" or
+            ".rw2" or ".rwl" or ".srw" or
             ".wav" or ".avi" or ".mov" or ".mp4" => true,
             _ => false,
         };
     }
 
-    private static ImageMetadata ExtractMetadata(string imagePath)
+    private static ImageMetadata? ExtractMetadata(string imagePath, string? filterString = null)
     {
         var directories = ImageMetadataReader.ReadMetadata(imagePath);
         var metadataTags = new List<MetadataTag>();
@@ -154,6 +172,9 @@ class Program
         {
             foreach (var tag in directory.Tags)
             {
+                if (filterString != null && !tag.Name.Contains(filterString))
+                    continue;
+
                 metadataTags.Add(new MetadataTag
                 {
                     DirectoryName = directory.Name,
@@ -161,6 +182,12 @@ class Program
                     Description = tag.Description ?? string.Empty
                 });
             }
+        }
+
+        // Only return ImageMetadata if there are tags matching the filter
+        if (metadataTags.Count == 0)
+        {
+            return null;
         }
 
         return new ImageMetadata
@@ -173,13 +200,14 @@ class Program
 
     private static void DisplayHelp()
     {
-        Console.WriteLine("Usage: extractor <file-path> [-d <directory-path>] [-o <output-file>] [-r]");
+        Console.WriteLine("Usage: extractor <file-path> [-d <directory-path>] [-o <output-file>] [-r] [-t <filter-string>]");
         Console.WriteLine();
         Console.WriteLine("Options:");
         Console.WriteLine("  <file-path>           Path to a single image file.");
         Console.WriteLine("  -d <directory-path>   Path to a directory containing image files.");
         Console.WriteLine("  -o <output-file>      Path to the output file for saving the extracted metadata.");
         Console.WriteLine("  -r                    Include subdirectories when processing a directory.");
+        Console.WriteLine("  -t <filter-string>    Filter metadata by TagName.");
         Console.WriteLine("  -v, --version         Display version.");
         Console.WriteLine();
         Console.WriteLine("Examples:");
@@ -188,5 +216,6 @@ class Program
         Console.WriteLine("  extractor -d images_directory");
         Console.WriteLine("  extractor -d images_directory -o output.json");
         Console.WriteLine("  extractor -d images_directory -r");
+        Console.WriteLine("  extractor -d images_directory -t \"Image Height\"");
     }
 }
