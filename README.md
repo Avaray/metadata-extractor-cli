@@ -2,11 +2,12 @@
 
 [![Build and Release](https://github.com/Avaray/metadata-extractor-cli/actions/workflows/build-and-release.yml/badge.svg)](https://github.com/Avaray/metadata-extractor-cli/actions/workflows/build-and-release.yml)
 
-A command-line interface (CLI) application that extracts metadata from image files. This tool is designed for developers who need to quickly access metadata from images in various formats.
+A command-line interface (CLI) application that extracts metadata from image files.  
+This tool is designed for developers who need to quickly access metadata from images in various formats.
 
 ## Features
 
-- Extracts metadata from single image or all images in a specified directory.
+- Extracts metadata from single image or all images in a specified directory (also recursively).
 - Outputs the extracted metadata to console as JSON or saves it to a JSON file.
 - Supports [various image formats](https://github.com/drewnoakes/metadata-extractor-dotnet?tab=readme-ov-file#features).
 
