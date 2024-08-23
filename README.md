@@ -88,8 +88,9 @@ I created this project because I needed a tool like this. I will use it in my ot
 
 Creating a working CLI took me a little over an hour. However, messing around with configuring GitHub Actions for Releases drove me crazy. But finally, I got it working 🎉
 
-I might add more features in the future. I'm considering adding these features:
+I might add more features in the future. I'm considering following changes:
 
-- Extract metadata from images in a recursive manner (as default). This feature will break current JSON output format (it's array of objects now).
-- Add checks for invalid file types. To print message rather than throwing an exception.
+- [ ] Extract metadata from images in a recursive manner (as default). This feature will break current JSON output format (it's array of objects now).
+- [ ] Add checks for invalid file types. To print message rather than throwing an exception.
+- [ ] Lower the required .NET version
 <!-- - Possibility to extract only specific tags. For example `PNG-tEXt`. -->
