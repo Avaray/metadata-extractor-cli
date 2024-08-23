@@ -89,3 +89,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.DYGNITORZ_TOKEN_OLD }}
         with:
           tag_name: ${{ needs.build.outputs.version }}
+          files: |
+            release-linux-x64/*
+            release-linux-x64-no-runtime/*
+            release-win-x64/*
+            release-win-x64-no-runtime/*
+            release-osx-x64/*
+            release-osx-x64-no-runtime/*
