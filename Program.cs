@@ -8,7 +8,7 @@ class Program
 
     public class ImageMetadata
     {
-        public string FilePath { get; set; } = string.Empty; // Added FilePath field
+        public string FilePath { get; set; } = string.Empty;
         public string FileName { get; set; } = string.Empty;
         public List<MetadataTag> Tags { get; set; } = [];
     }
@@ -38,9 +38,9 @@ class Program
 
         string? outputPath = null;
         bool isDirectory = false;
+        bool includeSubdirectories = false;
         string filePath = args[0];
 
-        // Check for additional parameters
         for (int i = 0; i < args.Length; i++)
         {
             if (args[i] == "-d")
@@ -68,9 +68,13 @@ class Program
                     return;
                 }
             }
+            else if (args[i] == "-r")
+            {
+                includeSubdirectories = true;
+            }
             else if (i == 0)
             {
-                // If it's not a -d or -o option and it's the first argument, treat it as the file path
+                // If it's not a -d, -o, or -r option and it's the first argument, treat it as the file path
                 filePath = args[i];
             }
         }
@@ -86,7 +90,8 @@ class Program
                 return;
             }
 
-            var imageFiles = System.IO.Directory.GetFiles(filePath, "*.*", System.IO.SearchOption.TopDirectoryOnly)
+            var searchOption = includeSubdirectories ? System.IO.SearchOption.AllDirectories : System.IO.SearchOption.TopDirectoryOnly;
+            var imageFiles = System.IO.Directory.GetFiles(filePath, "*.*", searchOption)
                 .Where(file => file.EndsWith(".jpg", StringComparison.OrdinalIgnoreCase) ||
                                file.EndsWith(".jpeg", StringComparison.OrdinalIgnoreCase) ||
                                file.EndsWith(".webp", StringComparison.OrdinalIgnoreCase) ||
@@ -142,7 +147,7 @@ class Program
 
         return new ImageMetadata
         {
-            FilePath = imagePath, // Set the FilePath field
+            FilePath = imagePath,
             FileName = System.IO.Path.GetFileName(imagePath),
             Tags = metadataTags
         };
@@ -150,12 +155,13 @@ class Program
 
     private static void DisplayHelp()
     {
-        Console.WriteLine("Usage: extractor <file-path> [-d <directory-path>] [-o <output-file>]");
+        Console.WriteLine("Usage: extractor <file-path> [-d <directory-path>] [-o <output-file>] [-r]");
         Console.WriteLine();
         Console.WriteLine("Options:");
         Console.WriteLine("  <file-path>           Path to a single image file.");
         Console.WriteLine("  -d <directory-path>   Path to a directory containing image files.");
         Console.WriteLine("  -o <output-file>      Path to the output file for saving the extracted metadata.");
+        Console.WriteLine("  -r                    Include subdirectories when processing a directory.");
         Console.WriteLine("  -v, --version         Display version.");
         Console.WriteLine();
         Console.WriteLine("Examples:");
@@ -163,5 +169,6 @@ class Program
         Console.WriteLine("  extractor -d images_directory");
         Console.WriteLine("  extractor image.jpg -o output.json");
         Console.WriteLine("  extractor -d images_directory -o output.json");
+        Console.WriteLine("  extractor -d images_directory -r");
     }
 }
