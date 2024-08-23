@@ -111,4 +111,4 @@ I might add more features in the future. I'm considering following changes:
 - [x] Add checks for invalid file types. To print message rather than throwing an exception.
 - [ ] Lower the required .NET version.
 - [x] Possibility to filter images by "Tag Name".
-- [x] Possibility to filter images with [Regex](https://en.wikipedia.org/wiki/Regular_expression).
+- [x] Possibility to filter images by searching in "Tag Description"
