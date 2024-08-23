@@ -22,7 +22,7 @@ This tool is designed for developers who need to quickly access metadata from im
 
 1. Download the latest release from the [Releases](https://github.com/Avaray/metadata-extractor-cli/releases) page.  
    You need to have [.NET 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) installed on your machine if you want to use `no-runtime` version.
-2. Extract the contents of the ZIP file to a directory of your choice.
+2. Extract executable file from the downloaded archive.
 3. Navigate to the directory where you extracted the files.
 4. Run the following command to get list of available commands:
 
