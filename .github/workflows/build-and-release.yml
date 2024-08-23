@@ -80,8 +80,8 @@ jobs:
           cd ..\..
         shell: powershell
 
-      - name: Show Tree
-        run: tree
+      - name: List Archives
+        run: ls -l ./archives
 
       - name: Upload Archives
         uses: actions/upload-artifact@v4
@@ -101,9 +101,6 @@ jobs:
 
       - name: List downloaded files
         run: ls -l
-
-      - name: Show Tree
-        run: tree
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
