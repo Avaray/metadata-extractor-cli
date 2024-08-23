@@ -19,10 +19,8 @@ A command-line interface (CLI) application that extracts metadata from image fil
 
 ## Usage
 
-> **RELEASES ARE NOT AVAILABLE YET**  
-> **I NEED TO CREATE WORKFLOWS FOR THEM**
-
-1. Download the latest release from the [Releases](https://github.com/Avaray/metadata-extractor-cli/releases) page.
+1. Download the latest release from the [Releases](https://github.com/Avaray/metadata-extractor-cli/releases) page.  
+   You need to have [.NET 8.0](https://dotnet.microsoft.com/en-us/download/dotnet/8.0) installed on your machine if you want to use `no-runtime` version.
 2. Extract the contents of the ZIP file to a directory of your choice.
 3. Navigate to the directory where you extracted the files.
 4. Run the following command to get list of available commands:
@@ -88,7 +86,7 @@ dotnet build
 
 I created this project because I needed a tool like this. I will use it in my other project where I need to extract metadata from images. Normally I don't code in C# but with help of [Claude](https://claude.ai/) and [Perplexity](https://www.perplexity.ai/) it was pretty easy 👌
 
-Creating a working CLI took me a little over an hour. However, messing around with configuring GitHub Actions for Releases continues as you read this.
+Creating a working CLI took me a little over an hour. However, messing around with configuring GitHub Actions for Releases drove me crazy. But finally, I got it working 🎉
 
 I might add more features in the future. I'm considering adding these features:
 
