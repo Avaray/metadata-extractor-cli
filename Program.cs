@@ -164,39 +164,40 @@ class Program
     }
 
     private static ImageMetadata? ExtractMetadata(string imagePath, string? filterString = null)
+{
+    var directories = ImageMetadataReader.ReadMetadata(imagePath);
+    var metadataTags = new List<MetadataTag>();
+
+    foreach (var directory in directories)
     {
-        var directories = ImageMetadataReader.ReadMetadata(imagePath);
-        var metadataTags = new List<MetadataTag>();
-
-        foreach (var directory in directories)
+        foreach (var tag in directory.Tags)
         {
-            foreach (var tag in directory.Tags)
+            // Convert filterString and tag.Name to lowercase for case-insensitive matching
+            if (filterString != null && !tag.Name.ToLowerInvariant().Contains(filterString.ToLowerInvariant()))
+                continue;
+
+            metadataTags.Add(new MetadataTag
             {
-                if (filterString != null && !tag.Name.Contains(filterString))
-                    continue;
-
-                metadataTags.Add(new MetadataTag
-                {
-                    DirectoryName = directory.Name,
-                    TagName = tag.Name,
-                    Description = tag.Description ?? string.Empty
-                });
-            }
+                DirectoryName = directory.Name,
+                TagName = tag.Name,
+                Description = tag.Description ?? string.Empty
+            });
         }
-
-        // Only return ImageMetadata if there are tags matching the filter
-        if (metadataTags.Count == 0)
-        {
-            return null;
-        }
-
-        return new ImageMetadata
-        {
-            FilePath = imagePath,
-            FileName = System.IO.Path.GetFileName(imagePath),
-            Tags = metadataTags
-        };
     }
+
+    // Only return ImageMetadata if there are tags matching the filter
+    if (metadataTags.Count == 0)
+    {
+        return null; // Return null if no matching tags
+    }
+
+    return new ImageMetadata
+    {
+        FilePath = imagePath,
+        FileName = System.IO.Path.GetFileName(imagePath),
+        Tags = metadataTags
+    };
+}
 
     private static void DisplayHelp()
     {
