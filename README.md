@@ -8,7 +8,7 @@ This tool is designed for developers who need to quickly access metadata from im
 ## Features
 
 - Extracts metadata from single image or all images in a specified directory (also recursively).
-- Outputs the extracted metadata to console as JSON or saves it to a JSON file.
+- Outputs the extracted metadata to console as [JSON](https://en.wikipedia.org/wiki/JSON) or saves it to a JSON file.
 - Supports [various image formats](https://github.com/drewnoakes/metadata-extractor-dotnet?tab=readme-ov-file#features).
 
 ## Technologies and Libraries Used
@@ -38,22 +38,24 @@ extractor -h
 extractor <file-path>
 ```
 
-- **Directory**: Extract metadata from all images in a specified directory (not recursive).
+- **Directory**: Extract metadata from all images in a specified directory.
 
 ```
 extractor -d <directory-path>
 ```
 
-<!-- - **Recursive Directory**: Extract metadata from all images in a specified directory and its subdirectories.
+- **Directory and Subdirectories**: Extract metadata from all images recursively in a specified directory.
 
 ```
 extractor -r <directory-path>
-``` -->
+```
 
 - **Output to File**: Save the extracted metadata to a JSON file.
 
 ```
+
 extractor <file-path> -o <output-file>
+
 ```
 
 ## Development
@@ -94,4 +96,4 @@ I might add more features in the future. I'm considering following changes:
 - [x] Extract recursive metadata extraction `-r` option.
 - [x] Add checks for invalid file types. To print message rather than throwing an exception.
 - [ ] Lower the required .NET version
-<!-- - Possibility to extract only specific tags. For example `PNG-tEXt`. -->
+- [ ] Possibility to extract only specific tags. For example `PNG-tEXt`.
