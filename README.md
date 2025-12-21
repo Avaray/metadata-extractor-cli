@@ -83,7 +83,7 @@ dotnet --version
 2. **Clone the Repository**:
 
 ```bash
-git clone https://github.com/Avaray/image-metadata-extractor-cli.git
+git clone https://github.com/Avaray/metadata-extractor-cli.git
 cd image-metadata-extractor-cli
 ```
 
